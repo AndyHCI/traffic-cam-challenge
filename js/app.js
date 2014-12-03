@@ -42,16 +42,6 @@ $(document).ready(function() {
 						lng: Number(light.location.longitude)
 					},
 					map: map
-					// Attempt for filtering markers by search	
-					/*
-					$('search').bind('search keyup', function() {
-						if (this.contains(light.cameralabel)) {
-							setMap(map);
-						} else {
-							setMap(null);
-						}
-					});
-					*/
 				});
 				markers.push(marker);
 
@@ -66,7 +56,17 @@ $(document).ready(function() {
 				});
 			});
 		})
-		.fail(function(error) {
-			console.log('error');
-		})
+
+	// search functionality 
+   $("#search").bind('search keyup', function(light) {
+        lights.forEach(function(light, index) {
+            var label = light.cameralabel.toLowerCase();
+            var exists = label.indexOf($("input").val().toLowerCase());
+            if (exists == -1) {
+                markers[index].setMap(null);
+            } else {
+                markers[index].setMap(map);
+            }
+        });
+    });
 });
